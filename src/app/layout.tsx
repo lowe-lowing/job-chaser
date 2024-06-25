@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import { cn, parse } from "@/lib/utils";
+import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,9 +17,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const theme = cookies().get("dark-theme")?.value;
+  const themeClass = theme ? (parse(theme) ? "dark" : "") : "dark";
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={cn(inter.className, "container", themeClass)}>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
