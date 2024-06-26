@@ -1,7 +1,7 @@
-// import { PrismaClient } from "@prisma/client";
-// import { faker } from "@faker-js/faker"; // https://fakerjs.dev/
-const { PrismaClient } = require("@prisma/client");
-const { faker } = require("@faker-js/faker");
+import { PrismaClient } from "@prisma/client";
+import { faker } from "@faker-js/faker"; // https://fakerjs.dev/
+// const { PrismaClient } = require("@prisma/client");
+// const { faker } = require("@faker-js/faker");
 
 const prisma = new PrismaClient();
 

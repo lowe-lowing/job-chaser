@@ -1,14 +1,13 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import prisma from "@/lib/server/db";
 import { getSession } from "@/lib/session";
 import Link from "next/link";
 import ApplyForm from "./ApplyForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Apply for job",
+};
 
 export default async function page({ params }: { params: { jobId: string } }) {
   const jobId = parseInt(params.jobId);

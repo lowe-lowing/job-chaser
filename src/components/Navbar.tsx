@@ -15,9 +15,21 @@ export default async function Navbar() {
 
   return (
     <nav className="flex items-center justify-between py-2 transition-all duration-300">
-      <h1 className="font-semibold cursor-pointer hover:opacity-75 transition-hover">
-        <Link href="/">Job-Chaser</Link>
-      </h1>
+      <div className="flex gap-3">
+        <h1 className="font-semibold cursor-pointer hover:opacity-75 transition-hover">
+          <Link href="/">Job-Chaser</Link>
+        </h1>
+        {session && (
+          <>
+            <h1 className="cursor-pointer hover:opacity-75 transition-hover">
+              <Link href="/jobs/create">Post Job</Link>
+            </h1>
+            <h1 className="cursor-pointer hover:opacity-75 transition-hover">
+              <Link href="/jobs">Your Jobs</Link>
+            </h1>
+          </>
+        )}
+      </div>
       <div className="flex items-center space-x-3">
         <NavbarThemeToggle initial={theme ? parse(theme) : true} />
         {session ? (

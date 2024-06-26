@@ -3,7 +3,6 @@ import FormButton from "@/components/FormButton";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { apply } from "@/lib/server/applications";
-import prisma from "@/lib/server/db";
 import { useFormState } from "react-dom";
 
 const initialState = {
