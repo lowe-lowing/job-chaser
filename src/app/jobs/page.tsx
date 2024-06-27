@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import Link from "next/link";
 import React from "react";
 import { Metadata } from "next";
+import { deleteJobPost, getJobPostsByUserId } from "@/lib/server/jobPosts";
 
 export const metadata: Metadata = {
   title: "Your Jobs",
@@ -17,10 +18,8 @@ export default async function page() {
   if (!session) {
     return <p>Not logged in</p>;
   }
-  const jobPosts = await prisma.jobPost.findMany({
-    where: { userId: session.user.id },
-    include: { user: true, _count: { select: { jobApplications: true } } },
-  });
+  const jobPosts = await getJobPostsByUserId(session.user.id);
+
   return (
     <main className="flex flex-col items-center pb-10">
       <p className="mb-6">Your Jobs:</p>
@@ -48,7 +47,7 @@ export default async function page() {
                 <ConfirmDialog
                   onConfirm={async () => {
                     "use server";
-                    await prisma.jobPost.delete({ where: { id: job.id } });
+                    await deleteJobPost(job.id);
                     revalidatePath("/jobs");
                   }}
                   message={"Are you sure you want to delete this job?"}

@@ -1,4 +1,5 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { getUserApplications } from "@/lib/server/applications";
 import prisma from "@/lib/server/db";
 import { getSession } from "@/lib/session";
 import { Metadata } from "next";
@@ -12,10 +13,8 @@ export default async function page() {
   if (!session) {
     return <p>Not logged in</p>;
   }
-  const applications = await prisma.jobApplication.findMany({
-    where: { userId: session.user.id },
-    include: { jobPost: { include: { user: true, _count: { select: { jobApplications: true } } } } },
-  });
+  const applications = await getUserApplications(session.user.id);
+
   return (
     <main className="flex flex-col items-center space-y-5 mb-10">
       <p>Welcome {session?.user?.name}</p>

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import EditForm from "./EditForm";
 import SelectStatus from "./SelectStatus";
 import { Metadata } from "next";
+import { getJobById } from "@/lib/server/jobPosts";
 
 export const metadata: Metadata = {
   title: "Edit Job Post",
@@ -13,13 +14,7 @@ export const metadata: Metadata = {
 export default async function page({ params }: { params: { jobId: string } }) {
   const session = await getSession();
   const jobId = parseInt(params.jobId);
-  const job = await prisma.jobPost.findUnique({
-    where: { id: jobId },
-    include: {
-      user: true,
-      jobApplications: { include: { user: true } },
-    },
-  });
+  const job = await getJobById(jobId);
   if (!session || session.user.id !== job?.userId) {
     return <p>Not allowed</p>;
   }

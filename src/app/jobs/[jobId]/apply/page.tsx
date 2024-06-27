@@ -1,9 +1,10 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import prisma from "@/lib/server/db";
+import { getUserApplicationByJobId } from "@/lib/server/applications";
+import { getJobById } from "@/lib/server/jobPosts";
 import { getSession } from "@/lib/session";
+import { Metadata } from "next";
 import Link from "next/link";
 import ApplyForm from "./ApplyForm";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Apply for job",
@@ -11,37 +12,16 @@ export const metadata: Metadata = {
 
 export default async function page({ params }: { params: { jobId: string } }) {
   const jobId = parseInt(params.jobId);
-  const job = await prisma.jobPost.findUnique({
-    where: { id: jobId },
-    include: {
-      user: true,
-      _count: { select: { jobApplications: true } },
-    },
-  });
+  const job = await getJobById(jobId);
 
   if (!job) {
     return <p>Job not found</p>;
   }
-  const {
-    title,
-    description,
-    company,
-    location,
-    salary,
-    user,
-    _count: { jobApplications },
-  } = job;
+  const { title, description, company, location, salary, user, jobApplications } = job;
 
   const session = await getSession();
 
-  const application = session
-    ? await prisma.jobApplication.findFirst({
-        where: {
-          jobPostId: jobId,
-          userId: session.user.id,
-        },
-      })
-    : null;
+  const application = session ? await getUserApplicationByJobId(session.user.id, jobId) : null;
 
   return (
     <div className="space-y-3">
@@ -59,7 +39,7 @@ export default async function page({ params }: { params: { jobId: string } }) {
           </p>
         </CardContent>
         <CardFooter className="flex flex-col gap-2 items-start">
-          <p>Applicants: {jobApplications}</p>
+          <p>Applicants: {jobApplications.length}</p>
         </CardFooter>
       </Card>
       {session ? (

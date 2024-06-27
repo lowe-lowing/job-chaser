@@ -1,7 +1,7 @@
 import JobPostCard from "@/components/JobPostCard";
 import PaginationComponent from "@/components/PaginationComponent";
 import SearchForm from "@/components/SearchForm";
-import prisma from "@/lib/server/db";
+import { searchJobPosts } from "@/lib/server/jobPosts";
 import { getSession } from "@/lib/session";
 import { Suspense } from "react";
 
@@ -11,18 +11,7 @@ export default async function Home({ searchParams }: { searchParams?: { query?: 
   const limit = 10;
   const offset = (currentPage - 1) * limit;
   const query = searchParams?.query;
-  const posts = await prisma.jobPost.findMany({
-    where: { title: { contains: query, mode: "insensitive" } },
-    include: {
-      user: true,
-      jobApplications: true,
-    },
-    skip: offset,
-    take: limit,
-  });
-  const totalCount = await prisma.jobPost.count({
-    where: { title: { contains: query, mode: "insensitive" } },
-  });
+  const { posts, totalCount } = await searchJobPosts({ limit, offset, query });
 
   return (
     <main className="flex flex-col items-center pb-10">

@@ -34,3 +34,19 @@ export async function updateApplication({ applicationId, status }: UpdateApplica
   revalidatePath(`/jobs/${updatedApplication.jobPostId}/edit`);
   return updatedApplication;
 }
+
+export async function getUserApplicationByJobId(userId: number, jobId: number) {
+  return await prisma.jobApplication.findFirst({
+    where: {
+      userId,
+      jobPostId: jobId,
+    },
+  });
+}
+
+export async function getUserApplications(userId: number) {
+  return await prisma.jobApplication.findMany({
+    where: { userId },
+    include: { jobPost: { include: { user: true, _count: { select: { jobApplications: true } } } } },
+  });
+}
