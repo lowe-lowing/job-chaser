@@ -1,11 +1,5 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormState } from "react-dom";
@@ -47,12 +41,7 @@ export function LoginCard() {
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Password"
-              />
+              <Input id="password" name="password" type="password" placeholder="Password" />
             </div>
           </div>
         </form>
@@ -63,7 +52,7 @@ export function LoginCard() {
         </FormButton>
         {state.message && <p>{state.message}</p>}
         <p>
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link className="text-blue-500" href="/register">
             Register
           </Link>
