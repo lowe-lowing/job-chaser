@@ -19,7 +19,7 @@ export default function JobPostCard({
     <Card>
       <CardHeader>
         <CardTitle>
-          {title} - {company}
+          {title} • {company}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">

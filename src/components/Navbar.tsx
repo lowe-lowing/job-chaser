@@ -57,7 +57,9 @@ export default async function Navbar() {
             </form>
           </>
         ) : (
-          <Link href="/login">Sign in</Link>
+          <Link href="/login">
+            <Button variant={"outline"}>Sign in</Button>
+          </Link>
         )}
       </div>
     </nav>
